@@ -3,9 +3,10 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
+import java.util.Locale;
 
 /**
- * Author:      Francisco Menendez Moya
+ * Author:      Francisco Menéndez Moya
  *
  * Description: This is a simple class that calculates the amount of money implicated in each transaction
  *              adjusted to the PayPal fees as of January 2016. Currency: Euros
@@ -19,6 +20,7 @@ public class CalculadoraTarifas extends JFrame {
     //Class constructor
     public CalculadoraTarifas() {
         super("Calculadora de Tarifas de PayPal");
+        Locale.setDefault(Locale.UK);
 
         // sets layout manager
         setLayout(new GridBagLayout());
@@ -39,15 +41,15 @@ public class CalculadoraTarifas extends JFrame {
 
         add(button1, constraint);
 
-        //decimal places
+        //Decimal places
         DecimalFormat df = new DecimalFormat("0.00");
         df.setMaximumFractionDigits(2);
 
-        // adds window event listener
+        //Options when pressing 'X' on the window
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
                 int reply = JOptionPane.showConfirmDialog(CalculadoraTarifas.this,
-                        "¿Esta seguro que quiere salir?",
+                        "¿Está seguro que quiere salir?",
                         "Salir",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
@@ -57,38 +59,39 @@ public class CalculadoraTarifas extends JFrame {
             }
         });
 
+        //Options when pressing the button 'button1'
         button1.addActionListener(e -> {
-            double number1 = parsearReal(textField.getText(),-2);
-            if(number1 > 0){
-                double porcentaje = 0.0;
+            double number = parsearReal(textField.getText(),-2);
+            if(number > 0){
+                double percentage = 0.0;
 
-                if(number1 >= 0 && number1 <= 2500){
-                    porcentaje = 0.034;
-                } else if(number1 > 2500 && number1 <= 10000){
-                    porcentaje = 0.029;
-                }else if(number1 > 10000 && number1 <= 50000){
-                    porcentaje = 0.027;
-                }else if(number1 > 50000 && number1 <= 100000){
-                    porcentaje = 0.024;
-                }else if(number1 > 100000){
-                    porcentaje = 0.019;
+                if(number >= 0 && number <= 2500){
+                    percentage = 0.034;
+                } else if(number > 2500 && number <= 10000){
+                    percentage = 0.029;
+                }else if(number > 10000 && number <= 50000){
+                    percentage = 0.027;
+                }else if(number > 50000 && number <= 100000){
+                    percentage = 0.024;
+                }else if(number > 100000){
+                    percentage = 0.019;
                 }
 
-                double tarifa = 1.000 - porcentaje;
+                double taxes = 1.000 - percentage;
 
-                double enviar = (number1/tarifa) + 0.35;
-                double recibido = (number1*tarifa) - 0.35;
+                double send = (number/taxes) + 0.35;
+                double receive = (number*taxes) - 0.35;
 
                 JOptionPane.showConfirmDialog(CalculadoraTarifas.this,
-                        "Tarifa aplicada: " + df.format(porcentaje*100) + "% + 0.35€ \n" +
-                                "Si envia " + number1 + " euros le llegaran " + df.format(recibido) + "€ \n" +
-                                "Si quiere que le lleguen " + number1 + "€ necesitara que le envien " + df.format(enviar) +
+                        "Tarifa aplicada: " + df.format(percentage*100) + "% + 0.35€ \n" +
+                                "Si envía " + number + " euros le llegarán " + df.format(receive) + "€ \n" +
+                                "Si quiere que le lleguen " + number + "€ necesitará que le envíen " + df.format(send) +
                                 "€","Resultado",
                         JOptionPane.DEFAULT_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
             }else{
                 JOptionPane.showConfirmDialog(CalculadoraTarifas.this,
-                        "ERROR: Introduzca un numero valido","ERROR",
+                        "ERROR: Introduzca un número válido","ERROR",
                         JOptionPane.DEFAULT_OPTION,
                         JOptionPane.ERROR_MESSAGE);
             }
@@ -96,7 +99,7 @@ public class CalculadoraTarifas extends JFrame {
 
         pack();
 
-        // centers on screen
+        //Center window on screen
         setLocationRelativeTo(null);
 
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

@@ -58,7 +58,7 @@ public class CalculadoraTarifas extends JFrame {
         });
 
         button1.addActionListener(e -> {
-            int number1 = parsearEntero(textField.getText(),-2);
+            double number1 = parsearReal(textField.getText(),-2);
             if(number1 > 0){
                 double porcentaje = 0.0;
 
@@ -77,7 +77,7 @@ public class CalculadoraTarifas extends JFrame {
                 double tarifa = 1.000 - porcentaje;
 
                 double enviar = (number1/tarifa) + 0.35;
-                double recibido = (number1*tarifa) + 0.35;
+                double recibido = (number1*tarifa) - 0.35;
 
                 JOptionPane.showConfirmDialog(CalculadoraTarifas.this,
                         "Tarifa aplicada: " + df.format(porcentaje*100) + "% + 0.35€ \n" +
@@ -113,9 +113,9 @@ public class CalculadoraTarifas extends JFrame {
      * @param def   : number returned as error if conversion fails (no number found in 's')
      * @return      : 's' converted from String to int
      */
-    private static int parsearEntero(String s, int def) {
+    private static double parsearReal(String s, int def) {
         try {
-            return Integer.parseInt(s);
+            return Double.parseDouble(s);
         }
         catch (NumberFormatException e) {
             return def;
